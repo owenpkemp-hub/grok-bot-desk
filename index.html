@@ -1,0 +1,178 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b10"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>Grok Bot • Solana Desk</title>
+<style>
+:root{--bg:#090b10;--card:#11151f;--bd:#1e2536;--g:#00f59b;--r:#ff4d6a;--mu:#8a93a8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#e8ecf4;font:14px/1.4 -apple-system,Inter,system-ui,sans-serif}
+.wrap{max-width:540px;margin:0 auto;padding:10px 12px 60px}@media(min-width:900px){.wrap{max-width:820px}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:10px 0}
+.row{display:flex;align-items:center;gap:8px}.sp{justify-content:space-between}.mu{color:var(--mu);font-size:12px}
+.g{color:var(--g)}.r{color:var(--r)}.badge{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.bar{font-size:12px;flex-wrap:wrap}.dot{width:8px;height:8px;border-radius:50%;background:var(--g);animation:p 1.4s infinite}
+@keyframes p{50%{opacity:.3;box-shadow:0 0 0 6px #00f59b22}}
+.sw{width:36px;height:20px;border-radius:20px;background:#2a3246;position:relative;cursor:pointer}
+.sw.on{background:var(--g)}.sw::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}.sw.on::after{left:18px}
+.alert{border-radius:12px;padding:10px 12px;margin:8px 0;cursor:pointer;animation:drop .5s;font-weight:600;font-size:13px}
+@keyframes drop{from{transform:translateY(-30px);opacity:0}}
+.alert.red{background:#ff4d6a18;border:1px solid var(--r);color:var(--r);box-shadow:0 0 18px #ff4d6a55}
+.alert.grn{background:#00f59b14;border:1px solid var(--g);color:var(--g);box-shadow:0 0 18px #00f59b55}
+.tape{overflow:hidden;white-space:nowrap;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:6px 0}
+.tape span{display:inline-block;animation:mq 40s linear infinite}.tape b{margin:0 14px;font-weight:600}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+h1{margin:12px 0 0;font-size:24px}.bal{font-size:40px;font-weight:800;letter-spacing:-1px}
+button{background:#1a2030;color:#e8ecf4;border:1px solid var(--bd);border-radius:9px;padding:6px 10px;font-size:12px;cursor:pointer}
+button.on,button.pri{background:var(--g);color:#05150e;border-color:var(--g);font-weight:700}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}.tabs button{padding:8px 2px;font-size:11px}
+.agent{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd)}.agent:last-child{border:0}
+.agent .e{font-size:20px}.agent .t{flex:1}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cell{background:#0c1018;border:1px solid var(--bd);border-radius:10px;padding:8px}.cell b{display:block;font-size:16px}
+.feed{max-height:260px;overflow:auto;font:12px ui-monospace,monospace}.feed div{padding:3px 0;border-bottom:1px dashed #1a2030}
+.tag{font-weight:700}.FILTER{color:var(--r)}.ANALYST{color:#b48cff}.JUDGE{color:#ffb547}.EXECUTOR{color:var(--g)}.RISK{color:#ff6fb5}
+input{width:100%;background:#0c1018;border:1px solid var(--bd);color:#fff;border-radius:9px;padding:9px}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:6px 4px;border-bottom:1px solid var(--bd);text-align:left}
+pre{white-space:pre-wrap;font:12px ui-monospace,monospace;background:#0c1018;padding:10px;border-radius:10px}
+.sl{margin:8px 0}.sl input{padding:0}a{color:var(--g)}.hide{display:none}
+</style></head><body><div class="wrap">
+<div class="row sp bar">
+ <div class="row"><b id="clk">23:14</b><div class="sw on" id="nr"></div><span class="mu">night run</span></div>
+ <div class="row"><span class="badge" style="color:#7fb2ff">ESIN</span><span class="badge" style="color:#ffb547">7 agents · 6 core + Jev</span><span class="dot"></span><span class="g">Live</span></div>
+</div>
+<div id="alert" class="alert red"></div>
+<div class="row sp"><div><h1>Grok Bot</h1><div class="mu">Solana memes • strict RM • paper → live</div></div><button id="tgA">test stop/trail</button></div>
+<div class="tape" style="margin-top:10px"><span id="tape"></span></div>
+<div class="card">
+ <div class="mu" id="eqL">Equity • $280 at 23:00 • 8% max size</div>
+ <div class="row" style="flex-wrap:wrap;margin:8px 0" id="caps"></div>
+ <div class="bal" id="bal">$3,412.00</div>
+ <div class="row"><span class="g" id="pnl">+$3,132.00 (1119%)</span><span class="badge g" id="mult" style="background:#00f59b1a">12.19x</span></div>
+ <div class="row sp mu" style="margin-top:6px"><span id="stat">$VRAX running...</span><span>26W / 12L · <span class="g">0 rule breaks</span></span></div>
+ <svg id="ch" viewBox="0 0 500 140" style="width:100%;margin-top:8px"></svg>
+</div>
+<div class="tabs" id="tabs"><button class="on" data-t="0">Terminal</button><button data-t="1">Scanner + Jev</button><button data-t="2">Positions</button><button data-t="3">Rules</button></div>
+<section id="t0">
+ <div class="card"><div class="row sp"><b>Desk • 7 agents</b><span class="mu">all online</span></div><div id="agents"></div></div>
+ <div class="card"><b>Why they died</b><div class="grid2" id="died" style="margin-top:8px"></div></div>
+ <div class="card"><div class="row sp"><b>Logger</b><div class="row" id="ff"></div></div><div class="feed" id="feed"></div></div>
+</section>
+<section id="t1" class="hide"><div class="card">
+ <b>Live Scanner</b><div class="mu">Ticker or contract address → DexScreener</div>
+ <div class="row" style="margin-top:8px"><input id="q" placeholder="e.g. BONK or mint address"><button class="pri" id="scan">Scan Live DexScreener</button></div>
+ <div id="pairs"></div></div></section>
+<section id="t2" class="hide">
+ <div class="card"><b>Paper positions</b><table><thead><tr><th>Token</th><th>Size</th><th>PnL</th><th>Status</th><th></th></tr></thead><tbody id="pos"></tbody></table></div>
+ <div class="card"><div class="row sp"><b>21:00 Evening Report</b><button id="cp">Copy Report</button></div><pre id="rep"></pre></div>
+</section>
+<section id="t3" class="hide">
+ <div class="card"><b>Risk & Filter rules</b><div id="rules"></div></div>
+ <div class="card"><b>Sunday Calibration</b><table><thead><tr><th>Jev conf.</th><th>Expected</th><th>Actual</th><th>n</th></tr></thead><tbody id="cal"></tbody></table>
+ <div class="mu" style="margin-top:8px">Passed by Jev but RISK-clean: <b class="g" id="rc">7</b></div></div>
+</section>
+</div>
+<script>
+const $=s=>document.querySelector(s),fmt=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const LS='grokDesk';let st=JSON.parse(localStorage.getItem(LS)||'null')||{cap:280,night:true,
+ rules:{size:8,stop:6,trail:12,vol:50,top10:20,an:0.60,jev:0.70},
+ pos:[{t:'VRAX',sz:89,pnl:810,open:true},{t:'BUN',sz:72,pnl:420,open:false},{t:'KOMA',sz:64,pnl:315,open:false},{t:'PNUT',sz:58,pnl:240,open:false},{t:'DOOD',sz:61,pnl:-37,open:false},{t:'GIGA',sz:55,pnl:-21,open:false}]};
+const save=()=>localStorage.setItem(LS,JSON.stringify(st));
+// clock
+setInterval(()=>{if(!st.night){const d=new Date();$('#clk').textContent=d.toTimeString().slice(0,5)}},1000);
+$('#nr').onclick=()=>{st.night=!st.night;$('#nr').classList.toggle('on',st.night);$('#clk').textContent=st.night?'23:14':new Date().toTimeString().slice(0,5);
+ if(st.night)replay();else{tab(1);scan('solana')}save()};
+$('#nr').classList.toggle('on',st.night);
+// alerts
+const AL=[['red','💀 $DOOD stopped • -6% | hard stop • no averaging down | -$37'],['grn','🚀 $VRAX trailing • +73.7% | trail active after +12% | +$810']];let ai=0;
+function showA(){const a=$('#alert');a.className='alert '+AL[ai][0];a.textContent=AL[ai][1];void a.offsetWidth;a.style.animation='none';a.offsetHeight;a.style.animation=''}
+$('#tgA').onclick=$('#alert').onclick=()=>{ai^=1;showA();log(ai?'RISK':'RISK',ai?'$VRAX trail armed +12%, now +73.7%':'$DOOD hit -6% hard stop, closed -$37')};showA();
+// tape
+let tape=[['VRAX',73.7],['BONK',14.2],['WIF',8.9],['POPCAT',19.4],['DOOD',-6],['BUN',41.2],['PNUT',28.5],['GIGA',-3.1]];
+function drawTape(){const h=tape.map(([t,c])=>`<b class="${c>=0?'g':'r'}">$${t} ${c>=0?'+':''}${(+c).toFixed(1)}%</b>`).join('');$('#tape').innerHTML=h+h}
+drawTape();
+fetch('https://api.dexscreener.com/latest/dex/search?q=solana').then(r=>r.json()).then(d=>{(d.pairs||[]).filter(p=>p.chainId=='solana').slice(0,8).forEach(p=>tape.push([p.baseToken.symbol,p.priceChange?.h1??0]));drawTape()}).catch(()=>{});
+// equity curve
+function curve(start,end,n=38){let pts=[start],s=7;const rnd=()=>(s=(s*9301+49297)%233280)/233280;
+ for(let i=1;i<n;i++){pts.push(pts[i-1]*(1+(rnd()-.38)*.22))}const k=Math.pow(end/start,1/(n-1));
+ return pts.map((v,i)=>start*Math.pow(k,i)*(0.85+0.3*(v/pts[i]*rnd()*0+1)*(i==0||i==n-1?1:0.9+rnd()*0.2)))}
+let C=[];function drawChart(m){const W=500,H=140,mx=Math.max(...C),mn=Math.min(...C),pts=C.slice(0,m).map((v,i)=>[i/(C.length-1)*W,H-8-(v-mn)/(mx-mn||1)*(H-20)]);
+ if(pts.length<2)return;const d='M'+pts.map(p=>p.join(',')).join(' L');
+ $('#ch').innerHTML=`<defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00f59b" stop-opacity=".45"/><stop offset="1" stop-color="#10b981" stop-opacity="0"/></linearGradient></defs>
+ <path d="${d} L${pts.at(-1)[0]},${H} L0,${H}Z" fill="url(#gr)"/><path d="${d}" fill="none" stroke="#00f59b" stroke-width="2.5" style="filter:drop-shadow(0 0 4px #00f59b)"/>
+ <circle cx="${pts.at(-1)[0]}" cy="${pts.at(-1)[1]}" r="4" fill="#00f59b"/><text x="4" y="${H-12}" fill="#8a93a8" font-size="11">$${C[0].toFixed(0)}</text>
+ <text x="${W-4}" y="14" fill="#00f59b" font-size="11" text-anchor="end">${fmt(C.at(-1))} • 38 trades</text>`}
+function setEq(v){const p=v-st.cap;$('#bal').textContent=fmt(v);$('#pnl').textContent=(p>=0?'+':'-')+fmt(Math.abs(p))+` (${(p/st.cap*100).toFixed(0)}%)`;
+ $('#pnl').className=p>=0?'g':'r';$('#mult').textContent=(v/st.cap).toFixed(2)+'x'}
+let rt;function replay(){clearInterval(rt);const end=st.cap*3412/280;C=curve(st.cap,end);C[C.length-1]=end;let i=1;
+ $('#eqL').textContent=`Equity • ${fmt(st.cap).replace('.00','')} at 23:00 • ${st.rules.size}% max size`;
+ rt=setInterval(()=>{i++;drawChart(i);setEq(C[i-1]);$('#stat').textContent=i%5==0?'filter says no...':'$VRAX running...';if(i>=C.length)clearInterval(rt)},60)}
+const CAPS=[[280,'$280 Night Run'],[500,'$500 Desk'],[1000,'$1,000 Desk']];
+$('#caps').innerHTML=CAPS.map(([v,l])=>`<button data-c="${v}">${l}</button>`).join('')+'<button data-c="r">▶ Replay $280 → $3,412</button>';
+$('#caps').onclick=e=>{const c=e.target.dataset.c;if(!c)return;if(c!='r')st.cap=+c;else st.cap=280;save();markCaps();replay()};
+function markCaps(){document.querySelectorAll('#caps button').forEach(b=>b.classList.toggle('on',+b.dataset.c==st.cap))}markCaps();replay();
+// tabs
+function tab(n){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==n));[0,1,2,3].forEach(i=>$('#t'+i).classList.toggle('hide',i!=n));if(n==2)renderPos()}
+$('#tabs').onclick=e=>e.target.dataset.t&&tab(+e.target.dataset.t);
+// agents
+const AG=[['🔍','Scout','new pairs','Raydium + Pump.fun live','10.2k pairs','#7fb2ff'],['🚰','Filter','99.5% kill','killed $RUGX (LP unlocked)','10,010 - 98%','#ff4d6a'],
+['🤓','Analyst','scores survivors','$VRAX -> 0.84 -> pass','204 scored','#b48cff'],['⚖️','Jev (Judge)','4-question gate','organic 0.86 • exit 2/5 • BUY 0.81','38 approved','#ffb547'],
+['⚡','Executor','8% max size','buy $VRAX $89 (7.9%)','size ≤ 8%','#00f59b'],['🚨','Risk','-6% stop • trail','hard stop -6% • trail +12%','-6% • trail +12%','#ff6fb5'],['📓','Logger','reason for all','every trade & pass logged','4,010 reasons','#4de1ff']];
+$('#agents').innerHTML=AG.map(a=>`<div class="agent"><span class="e">${a[0]}</span><div class="t"><b>${a[1]}</b> <span class="mu">(${a[2]})</span><div class="mu">${a[3]}</div></div><span class="badge" style="color:${a[5]}">${a[4]}</span></div>`).join('');
+$('#died').innerHTML=[['Mint not revoked','3,412'],['LP not locked','2,890'],['Top 10 holders >20%','1,940'],['Volume <$50k last hour','1,120'],['Dev wallet -> past rugs','648'],['Analyst score < 0.6','142'],['Jev Judge gate < 0.70','24'],['Executed trades','38']]
+ .map(([k,v],i)=>`<div class="cell"><span class="mu">${k}</span><b class="${i==7?'g':''}">${v}</b></div>`).join('');
+// logger
+let LOG=[['23:02','FILTER','killed $RUGX — LP unlocked'],['23:04','ANALYST','$VRAX scored 0.84 → pass to Jev'],['23:05','JUDGE','$VRAX organic 0.86 • late no • exit 2/5 • BUY 0.81'],
+['23:05','EXECUTOR','buy $VRAX $89 (7.9%)'],['23:21','FILTER','killed $MOONZ — mint not revoked'],['23:40','ANALYST','$DOOD scored 0.66 → pass to Jev'],['23:41','JUDGE','$DOOD BUY 0.72'],
+['23:41','EXECUTOR','buy $DOOD $61 (7.6%)'],['00:12','RISK','$DOOD -6% hard stop, closed -$37 • no averaging down'],['00:30','RISK','$VRAX trail active after +12%'],['01:15','EXECUTOR','buy $BUN $72 (7.8%)'],['02:44','JUDGE','$GROKK PASS 0.58 — late entry']];
+let F='ALL';const FM={TRADES:['EXECUTOR'],KILLS:['FILTER'],JEV:['JUDGE'],RISK:['RISK']};
+$('#ff').innerHTML=['ALL','TRADES','KILLS','JEV','RISK'].map(f=>`<button data-f="${f}">${f}</button>`).join('');
+$('#ff').onclick=e=>{if(e.target.dataset.f){F=e.target.dataset.f;drawFeed()}};
+function drawFeed(){document.querySelectorAll('#ff button').forEach(b=>b.classList.toggle('on',b.dataset.f==F));
+ $('#feed').innerHTML=LOG.filter(l=>F=='ALL'||FM[F].includes(l[1])||(F=='TRADES'&&l[1]=='ANALYST'&&0)).slice().reverse().map(l=>`<div><span class="mu">${l[0]}</span> <span class="tag ${l[1]}">[${l[1]}]</span> ${l[2]}</div>`).join('')}
+function log(t,m){LOG.push([new Date().toTimeString().slice(0,5),t,m]);drawFeed()}drawFeed();
+setInterval(()=>{const k=['RUGZ','PEPE2','CATX','DOGEX','FROGG'][Math.random()*5|0],r=['LP not locked','mint not revoked','top10 >20%','vol <$50k'][Math.random()*4|0];log('FILTER',`killed $${k} — ${r}`)},6000);
+// scanner
+let PAIRS=[];const n=v=>v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(1)+'k':(+v||0).toFixed(0);
+async function scan(q){q=(q||$('#q').value||'solana').trim();$('#pairs').innerHTML='<p class="mu">Scanning DexScreener…</p>';
+ try{let d=await (await fetch('https://api.dexscreener.com/latest/dex/search?q='+encodeURIComponent(q))).json();let ps=(d.pairs||[]).filter(p=>p.chainId=='solana');
+  if(!ps.length){d=await (await fetch('https://api.dexscreener.com/latest/dex/search?q=solana')).json();ps=(d.pairs||[]).filter(p=>p.chainId=='solana')}
+  PAIRS=ps.slice(0,8);renderPairs()}catch(e){$('#pairs').innerHTML='<p class="r">DexScreener unreachable — try again.</p>'}}
+function renderPairs(){$('#pairs').innerHTML=PAIRS.map((p,i)=>{const c=p.priceChange?.h1??0,tx=p.txns?.m5||{};return `<div class="card" style="background:#0c1018">
+ <div class="row sp"><b>$${p.baseToken.symbol} <span class="mu">${p.dexId}</span></b><span class="${c>=0?'g':'r'}">${c>=0?'+':''}${c}% 1h</span></div>
+ <div class="grid2 mu" style="margin:6px 0"><span>Price $${p.priceUsd}</span><span>Liq $${n(p.liquidity?.usd)}</span><span>Vol 1h $${n(p.volume?.h1)}</span><span>5m ${tx.buys||0}B / ${tx.sells||0}S</span></div>
+ <button class="pri" onclick="jev(${i})">Run Jev 4-Question Gate</button><div id="j${i}"></div></div>`}).join('')}
+$('#scan').onclick=()=>scan();$('#q').onkeydown=e=>e.key=='Enter'&&scan();
+function jev(i){const p=PAIRS[i],R=st.rules,tx=p.txns?.m5||{buys:0,sells:0},liq=p.liquidity?.usd||0,v1=p.volume?.h1||0,c1=p.priceChange?.h1||0,c24=p.priceChange?.h24||0;
+ const organic=Math.min(.99,(tx.buys/((tx.buys+tx.sells)||1))*.6+Math.min(1,v1/(R.vol*1e3))*.4),late=c24>300||c1>80,
+ exit=Math.max(1,Math.min(5,Math.round(5-Math.log10(liq+1)+2))),age=p.pairCreatedAt?((Date.now()-p.pairCreatedAt)/36e5).toFixed(1)+'h':'?';
+ let conf=organic*.5+(late?0:.25)+(exit<=3?.2:0)+(c1>0?.05:0);const act=conf>=R.jev&&!late&&exit<=3&&organic>=.65?'BUY':conf>=.55?'WATCH':'PASS';
+ const ok=b=>b?'<span class="g">✔</span>':'<span class="r">✘</span>',size=(st.cap*R.size/100);
+ LOG.push([new Date().toTimeString().slice(0,5),'JUDGE',`$${p.baseToken.symbol} ${act} ${conf.toFixed(2)}`]);drawFeed();
+ $('#j'+i).innerHTML=`<pre>HEAD DOSSIER — $${p.baseToken.symbol}/${p.quoteToken.symbol}
+CA: ${p.baseToken.address}
+Age: ${age} • Liq $${n(liq)} • FDV $${n(p.fdv)} • Vol1h $${n(v1)}</pre>
+ <div>${ok(organic>=.65)} organic ${organic.toFixed(2)} (≥0.65)</div><div>${ok(!late)} late = ${late?'yes':'no'}</div>
+ <div>${ok(exit<=3)} exit_risk ${exit}/5 (≤3)</div><div>${ok(act=='BUY')} action: <b class="${act=='BUY'?'g':'r'}">${act} ${conf.toFixed(2)}</b> (≥${R.jev})</div>
+ <div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="pri" onclick="paper(${i},${size})">⚡ Paper Buy (${R.size}% Max Size) ${fmt(size)}</button>
+ <a href="${p.url}" target="_blank">DexScreener</a> <a href="https://jup.ag/swap/SOL-${p.baseToken.address}" target="_blank">Jupiter</a></div>`}
+function paper(i,sz){const p=PAIRS[i];st.pos.unshift({t:p.baseToken.symbol,sz:+sz.toFixed(2),pnl:0,open:true,entry:+p.priceUsd,addr:p.pairAddress});save();log('EXECUTOR',`paper buy $${p.baseToken.symbol} ${fmt(sz)} (${st.rules.size}%)`);alert('Paper position opened — see Positions tab')}
+// positions & report
+function renderPos(){$('#pos').innerHTML=st.pos.map((p,i)=>`<tr><td>$${p.t}</td><td>${fmt(p.sz)}</td><td class="${p.pnl>=0?'g':'r'}">${p.pnl>=0?'+':'-'}${fmt(Math.abs(p.pnl))}</td><td>${p.open?'<span class="g">open</span>':'<span class="mu">closed</span>'}</td><td>${p.open?`<button onclick="closeP(${i})">Close</button>`:''}</td></tr>`).join('');rep()}
+function closeP(i){const p=st.pos[i];p.open=false;log('EXECUTOR',`closed $${p.t} ${p.pnl>=0?'+':''}${p.pnl.toFixed(2)}`);save();renderPos()}
+function rep(){const cl=st.pos.filter(p=>!p.open),w=cl.filter(p=>p.pnl>0).length,tot=st.pos.reduce((a,p)=>a+p.pnl,0),d=new Date().toISOString().slice(0,10);
+ $('#rep').textContent=`DESK ${d} • 21:00
+Equity: ${$('#bal').textContent} (start ${fmt(st.cap)})
+Scanned 10.2k pairs • Filter killed 10,010 (98%) • Analyst scored 204 • Jev approved 38
+Trades today: ${st.pos.length} • W ${w} / L ${cl.length-w} • open ${st.pos.length-cl.length}
+Paper PnL (book): ${tot>=0?'+':'-'}${fmt(Math.abs(tot))}
+Best: $VRAX +$810 (trail after +12%) • Worst: $DOOD -$37 (hard stop -6%)
+Rules: size ≤${st.rules.size}% • stop -${st.rules.stop}% • trail +${st.rules.trail}% • 0 rule breaks
+Mode: paper → live gate pending Sunday calibration`}
+$('#cp').onclick=()=>navigator.clipboard.writeText($('#rep').textContent).then(()=>$('#cp').textContent='Copied ✓');
+setInterval(()=>{st.pos.forEach(p=>{if(p.open)p.pnl+=p.sz*(Math.random()-.45)*.03});if(!$('#t2').classList.contains('hide'))renderPos()},3000);
+// rules
+const RU=[['size','Max Size',1,15,1,'%'],['stop','Hard Stop -',2,15,1,'%'],['trail','Trail +',5,40,1,'%'],['vol','Min Vol $',10,250,5,'k'],['top10','Top 10 Holders ≤',5,50,1,'%'],['an','Analyst ≥',.3,.95,.01,''],['jev','Jev ≥',.5,.95,.01,'']];
+$('#rules').innerHTML=RU.map(([k,l,a,b,s,u])=>`<div class="sl"><div class="row sp"><span>${l}<b id="v_${k}">${st.rules[k]}</b>${u}</span></div><input type="range" min="${a}" max="${b}" step="${s}" value="${st.rules[k]}" data-k="${k}"></div>`).join('');
+$('#rules').oninput=e=>{const k=e.target.dataset.k;st.rules[k]=+e.target.value;$('#v_'+k).textContent=st.rules[k];save();$('#eqL').textContent=`Equity • ${fmt(st.cap).replace('.00','')} at 23:00 • ${st.rules.size}% max size`};
+$('#cal').innerHTML=[['0.70–0.79','60–70%','61% (11/18)',18],['0.80–0.89','70–80%','77% (10/13)',13],['0.90+','80%+','71% (5/7)',7]].map(r=>`<tr>${r.map((c,i)=>`<td class="${i==2?'g':''}">${c}</td>`).join('')}</tr>`).join('');
+</script></body></html>
